@@ -6,8 +6,8 @@ import NavLinks from "./NavLinks";
 
 const Navbar = () => {
     return (
-        <nav className="py-3 ">
-            <div className="relative z-100 w-full flex">
+        <nav className="py-3 fixed top-0 w-full backdrop-blur-2xl z-[1000]">
+            <div className="z-100 w-full flex ">
                 <div className="navbar container px-4 sm:px-6 lg:px-8 mx-auto flex justify-between">
                     <div className="flex items-center gap-20 flex-1">
 
