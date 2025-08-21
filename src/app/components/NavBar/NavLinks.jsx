@@ -21,7 +21,7 @@ const NavLinks = () => {
                     return <Link
                         key={i}
                         href={link.href}
-                        className={`text-sm font-semibold ${isActive ? 'text-blue-400' : ''}`}>
+                        className={`text-sm font-semibold ${isActive ? 'text-indigo-400' : ''}`}>
                         {link.label}
                     </Link>
                 })
