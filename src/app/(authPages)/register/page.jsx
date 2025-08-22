@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { Eye, EyeOff, UserPlus, Cpu, Mail, User, Image, Lock } from 'lucide-react';
 import Link from 'next/link';
 import { SignUpUser } from '@/app/actions/auth/signUpUser';
+import Loader from '@/app/components/Loader/Loader';
 
 const page = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -24,6 +26,7 @@ const page = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
 
     // If no image link provided, set default avatar
     const finalData = {
@@ -34,8 +37,10 @@ const page = () => {
     const result = await SignUpUser(finalData)
     if (result.success == false) {
       alert(result.message)
-    }else{
+      setIsLoading(false)
+    } else {
       alert("Account created Successfully!")
+      setIsLoading(false)
     }
   };
 
@@ -182,10 +187,17 @@ const page = () => {
             <div className="pt-2">
               <button
                 type="submit"
-                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+                disabled={isLoading}
+                className="w-full disabled:cursor-not-allowed flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
               >
-                <UserPlus className="w-5 h-5 mr-2" />
-                Create Account
+                {
+                  isLoading
+                    ? <Loader />
+                    : <>
+                      <UserPlus className="w-5 h-5 mr-2" />
+                      Create Account
+                    </>
+                }
               </button>
             </div>
           </form>

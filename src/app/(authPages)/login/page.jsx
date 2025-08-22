@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { Eye, EyeOff, LogIn, Cpu, Github, Twitter, Mail, Key } from 'lucide-react';
 import Link from 'next/link';
 import { signIn } from "next-auth/react"
+import Loader from '@/app/components/Loader/Loader';
 
 const page = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -21,16 +23,25 @@ const page = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
     const { email, password } = formData
     // Handle login logic here
-    signIn('credentials', {
-      redirect: true,
+    const result = await signIn('credentials', {
+      redirect: false,
       email,
       password,
-      callbackUrl: '/'
+      // callbackUrl: '/'
     })
+    if (!result.ok) {
+      alert("invalid credential")
+      setIsLoading(false)
+    }
+    else {
+      setIsLoading(false)
+      window.location.href = '/';
+    }
   };
 
   return (
@@ -143,10 +154,19 @@ const page = () => {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+                disabled={isLoading}
+                className="w-full disabled:cursor-not-allowed flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
               >
-                <LogIn className="w-5 h-5 mr-2" />
-                Sign in
+                {
+                  isLoading
+                    ? <Loader />
+                    : <>
+                      <LogIn className="w-5 h-5 mr-2" />
+                      Sign in
+                    </>
+                }
+
+
               </button>
             </div>
           </form>
