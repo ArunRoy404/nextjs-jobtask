@@ -1,59 +1,49 @@
 'use client';
 
 import { useState } from 'react';
-import { Eye, EyeOff, UserPlus, Cpu, Mail, User, Image, Lock } from 'lucide-react';
+import { Eye, EyeOff, LogIn, Cpu, Github, Twitter, Mail, Key } from 'lucide-react';
 import Link from 'next/link';
-import { SignUpUser } from '@/app/actions/auth/signUpUser';
+import { signIn } from "next-auth/react"
 import Loader from '@/app/components/Loader/Loader';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 
-const page = () => {
+const LoginPage = () => {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl') || '/';
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
-    username: '',
     password: '',
-    imageLink: ''
+    rememberMe: false
   });
 
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/';
-
-
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true)
-
-    // If no image link provided, set default avatar
-    const finalData = {
-      ...formData,
-      imageLink: formData.imageLink || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzClN-XRWfmJUshfKNpXqRGEXK9DE1YvWZ2Q&s'
-    };
-
-    const result = await SignUpUser(finalData)
-    if (result.success == false) {
-      alert(result.message)
+    const { email, password } = formData
+    // Handle login logic here
+    const result = await signIn('credentials', {
+      redirect: true,
+      email,
+      password,
+      callbackUrl: callbackUrl || "/"
+    })
+    if (!result.ok) {
+      alert("invalid credential")
       setIsLoading(false)
-    } else {
-      alert("Account created Successfully!")
-      setIsLoading(false)
-      router.push(callbackUrl);
     }
-  };
-
-  const handleGoogleLogin = () => {
-    // Handle Google login logic here
-    console.log('Google login clicked');
+    else {
+      setIsLoading(false)
+    }
   };
 
   return (
@@ -73,19 +63,19 @@ const page = () => {
 
       <div className="w-full max-w-md z-10">
 
-        {/* Registration Card */}
+
+        {/* Login Card */}
         <div className="bg-gray-900/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-800/50 p-8">
           <div className="text-center mb-8">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-indigo-900/30 border border-indigo-700/30 mb-4">
               <div className="w-2 h-2 rounded-full bg-indigo-400 mr-2 animate-pulse"></div>
-              <p className="text-indigo-300 text-sm font-medium">Join Our Community</p>
+              <p className="text-indigo-300 text-sm font-medium">Secure Access</p>
             </div>
-            <h2 className="text-2xl font-bold text-white">Create Account</h2>
-            <p className="text-gray-400 mt-2">Sign up to explore the latest gadgets</p>
+            <h2 className="text-2xl font-bold text-white">Welcome Back</h2>
+            <p className="text-gray-400 mt-2">Sign in to your account</p>
           </div>
 
-          <form className="space-y-5" onSubmit={handleSubmit}>
-            {/* Email Field */}
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
                 Email Address
@@ -108,48 +98,24 @@ const page = () => {
               </div>
             </div>
 
-            {/* Username Field */}
-            <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
-                Username
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-500" />
-                </div>
-                <input
-                  id="username"
-                  name="username"
-                  type="text"
-                  autoComplete="username"
-                  required
-                  value={formData.username}
-                  onChange={handleChange}
-                  className="bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 py-3 transition-colors duration-200"
-                  placeholder="Choose a username"
-                />
-              </div>
-            </div>
-
-            {/* Password Field */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
                 Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-500" />
+                  <Key className="h-5 w-5 text-gray-500" />
                 </div>
                 <input
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
-                  autoComplete="new-password"
+                  autoComplete="current-password"
                   required
                   value={formData.password}
                   onChange={handleChange}
                   className="bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-10 py-3 transition-colors duration-200"
-                  placeholder="Create a strong password"
+                  placeholder="••••••••"
                 />
                 <button
                   type="button"
@@ -163,35 +129,31 @@ const page = () => {
                   )}
                 </button>
               </div>
-              <p className="text-xs text-gray-500 mt-1">Must be at least 8 characters</p>
             </div>
 
-            {/* Profile Image Link Field (Optional) */}
-            <div>
-              <label htmlFor="imageLink" className="block text-sm font-medium text-gray-300 mb-2">
-                Profile Image Link <span className="text-gray-500 text-xs">(optional)</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Image className="h-5 w-5 text-gray-500" />
-                </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
                 <input
-                  id="imageLink"
-                  name="imageLink"
-                  type="url"
-                  value={formData.imageLink}
+                  id="rememberMe"
+                  name="rememberMe"
+                  type="checkbox"
+                  checked={formData.rememberMe}
                   onChange={handleChange}
-                  className="bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 py-3 transition-colors duration-200"
-                  placeholder="https://example.com/avatar.jpg"
+                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-600 rounded bg-gray-700/50"
                 />
+                <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-300">
+                  Remember me
+                </label>
               </div>
-              <p className="text-xs text-gray-500 mt-1">
-                {formData.imageLink ? 'Custom avatar will be used' : 'Default avatar will be used if not provided'}
-              </p>
+
+              <div className="text-sm">
+                <a href="#" className="font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
+                  Forgot password?
+                </a>
+              </div>
             </div>
 
-            {/* Submit Button */}
-            <div className="pt-2">
+            <div>
               <button
                 type="submit"
                 disabled={isLoading}
@@ -201,10 +163,12 @@ const page = () => {
                   isLoading
                     ? <Loader />
                     : <>
-                      <UserPlus className="w-5 h-5 mr-2" />
-                      Create Account
+                      <LogIn className="w-5 h-5 mr-2" />
+                      Sign in
                     </>
                 }
+
+
               </button>
             </div>
           </form>
@@ -216,13 +180,12 @@ const page = () => {
                 <div className="w-full border-t border-gray-700"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-gray-900 text-gray-400">Or sign up with</span>
+                <span className="px-2 bg-gray-900 text-gray-400">Or continue with</span>
               </div>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-6 ">
               <button
-                onClick={handleGoogleLogin}
                 className="w-full inline-flex justify-center items-center py-2 px-4 rounded-lg bg-gray-800/50 hover:bg-gray-800 text-sm font-medium text-gray-300 border border-gray-700 hover:border-indigo-500 transition-colors duration-200"
               >
                 <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" width="24" height="24">
@@ -238,9 +201,9 @@ const page = () => {
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-400">
-              Already have an account?{' '}
-              <Link href="/login" className="font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
-                Sign in
+              Don't have an account?{' '}
+              <Link href="/register" className="font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
+                Sign up
               </Link>
             </p>
           </div>
@@ -249,7 +212,7 @@ const page = () => {
         {/* Footer */}
         <div className="mt-8 text-center">
           <p className="text-xs text-gray-500">
-            By registering, you agree to our Terms of Service and Privacy Policy
+            &copy; {new Date().getFullYear()} GadgetSphere. All rights reserved.
           </p>
         </div>
       </div>
@@ -257,4 +220,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default LoginPage;
