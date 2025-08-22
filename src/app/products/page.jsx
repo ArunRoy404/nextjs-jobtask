@@ -1,8 +1,8 @@
 import { Star, ShoppingCart, Heart, Eye } from 'lucide-react';
 
 const page = async () => {
-    const res = await fetch('http://localhost:3000/api/products')
-    const data = await res.json()
+const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`);
+const data = await res.json();
     const products = await data.data
     return (
         <div className='pt-40 py-30'>
