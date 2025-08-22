@@ -7,8 +7,10 @@ export const middleware = async (req) => {
     const isProtectedRoute = req.nextUrl.pathname.startsWith('/dashboard')
 
     if (isProtectedRoute && !isTokenOK) {
-        const callbackUrl = encodeURIComponent(req.nextUrl.pathname)
-        return NextResponse.redirect(new URL(`/login?callbackurl=${callbackUrl}`, req.url))
+
+        const loginUrl = new URL("/login", req.url);
+        loginUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
+        return NextResponse.redirect(loginUrl);
     }
 
     return NextResponse.next()

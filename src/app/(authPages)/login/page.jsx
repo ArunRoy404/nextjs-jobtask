@@ -5,8 +5,11 @@ import { Eye, EyeOff, LogIn, Cpu, Github, Twitter, Mail, Key } from 'lucide-reac
 import Link from 'next/link';
 import { signIn } from "next-auth/react"
 import Loader from '@/app/components/Loader/Loader';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 const page = () => {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl') || '/';
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -29,10 +32,10 @@ const page = () => {
     const { email, password } = formData
     // Handle login logic here
     const result = await signIn('credentials', {
-      redirect: false,
+      redirect: true,
       email,
       password,
-      // callbackUrl: '/'
+      callbackUrl: callbackUrl || "/"
     })
     if (!result.ok) {
       alert("invalid credential")
@@ -40,7 +43,6 @@ const page = () => {
     }
     else {
       setIsLoading(false)
-      window.location.href = '/';
     }
   };
 
