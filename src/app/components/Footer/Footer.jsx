@@ -1,7 +1,13 @@
+'use client'
+
 import { Github, Linkedin } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Footer = () => {
+    const pathname = usePathname()
+    if (pathname.includes('/dashboard')) return <></>
+
     return (
         <footer className="bg-gray-900 border-t border-gray-800 py-12 px-4">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">

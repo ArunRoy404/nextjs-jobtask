@@ -1,5 +1,6 @@
 'use client'
 
+import { usePathname } from "next/navigation";
 import Logo from "../Logo/Logo";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import NavActions from "./NavActions";
@@ -10,6 +11,8 @@ const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+    const pathname = usePathname()
+    if(pathname.includes('/dashboard')) return <></>
 
     return (
         <nav className="py-3 fixed top-0 w-full backdrop-blur-2xl z-[1000]">

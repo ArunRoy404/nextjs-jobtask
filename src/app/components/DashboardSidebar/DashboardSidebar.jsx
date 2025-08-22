@@ -1,9 +1,12 @@
 'use client'
 import { useState } from 'react';
 import Link from 'next/link';
-import { Layout, Plus, Grid, X, Menu } from 'lucide-react';
+import { Layout, Grid, X, Menu, Cpu } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 
 const DashboardSidebar = () => {
+  const session = useSession()
+  const user = session?.data?.user
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
@@ -14,8 +17,8 @@ const DashboardSidebar = () => {
     },
     {
       name: 'Add Products',
-      href: '/dashboard/add-products',
-      icon: <Plus className="w-5 h-5" />
+      href: '/dashboard/add-product',
+      icon: <Cpu className="w-5 h-5" />
     }
   ];
 
@@ -73,12 +76,12 @@ const DashboardSidebar = () => {
         {/* User info at bottom */}
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center">
-              <span className="text-white font-semibold">AM</span>
+            <div className="w-8 h-8 rounded-full overflow-hidden bg-indigo-500 flex items-center justify-center">
+              <img src={user?.imageLink}/>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-white text-sm font-medium truncate">Alex Morgan</p>
-              <p className="text-gray-400 text-xs truncate">Admin</p>
+              <p className="text-white text-sm font-medium truncate">{user?.username}</p>
+              <p className="text-gray-400 text-xs truncate">User</p>
             </div>
           </div>
         </div>
@@ -86,7 +89,7 @@ const DashboardSidebar = () => {
 
       {/* Overlay for mobile */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
           onClick={() => setIsOpen(false)}
         />

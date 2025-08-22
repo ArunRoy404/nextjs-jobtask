@@ -1,7 +1,7 @@
 
 'use client'
 import { useState } from 'react';
-import { Plus, ArrowLeft, Save } from 'lucide-react';
+import { Plus, Save } from 'lucide-react';
 
 
 
@@ -94,25 +94,100 @@ const AddProductPage = () => {
     };
 
     return (
-        <div className="min-h-screen text-white py-8 px-4">
-            <div className="max-w-7xl mx-auto">
+        <div className="w-full pt-4">
+            <div className="">
+                {/* Product Form */}
+                <form onSubmit={handleSubmit} className="bg-gray-900/50 min-h-[calc(100vh-32px)] backdrop-blur-sm rounded-2xl p-8 border border-gray-700">
+
                 {/* Header */}
                 <div className="flex items-center justify-between mb-8">
-                    <button
-                        onClick={() => router.back()}
-                        className="flex items-center text-indigo-300 hover:text-indigo-400 transition-colors"
-                    >
-                        <ArrowLeft className="w-5 h-5 mr-2" />
-                        Back
-                    </button>
                     <h1 className="text-3xl font-bold text-white">Add New Product</h1>
                     <div className="w-20"></div> {/* Spacer for balance */}
                 </div>
+                
 
-                {/* Product Form */}
-                <form onSubmit={handleSubmit} className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         {/* Left Column */}
+                        <div className="space-y-6">
+                            {/* Preview Section */}
+                            <div className="">
+                                <h3 className="text-lg font-semibold text-white mb-3">Preview</h3>
+                                {formData.image ? (
+                                    <div className="rounded-lg overflow-hidden border border-gray-700">
+                                        <img
+                                            src={formData.image}
+                                            alt="Product preview"
+                                            className="w-full h-48 object-cover"
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="w-full h-48 bg-gray-800/50 border-2 border-dashed border-gray-700 rounded-lg flex items-center justify-center">
+                                        <p className="text-gray-500">Image preview will appear here</p>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Description */}
+                            <div className=''>
+                                <label htmlFor="description" className="block text-sm font-medium text-gray-300 mb-2">
+                                    Description *
+                                </label>
+                                <textarea
+                                    id="description"
+                                    name="description"
+                                    value={formData.description}
+                                    onChange={handleChange}
+                                    required
+                                    rows={5}
+                                    className="w-full bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 px-4 py-3 transition-colors duration-200"
+                                    placeholder="Enter detailed product description..."
+                                />
+                            </div>
+
+                            {/* Features */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                    Features *
+                                </label>
+                                <div className="space-y-3">
+                                    {formData.features.map((feature, index) => (
+                                        <div key={index} className="flex gap-2 items-center">
+                                            <div className="w-2 h-2 bg-indigo-400 rounded-full flex-shrink-0"></div>
+                                            <input
+                                                type="text"
+                                                value={feature}
+                                                onChange={(e) => handleFeatureChange(index, e.target.value)}
+                                                required={index === 0}
+                                                className="flex-1 bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 px-4 py-2 transition-colors duration-200"
+                                                placeholder={`Feature ${index + 1}`}
+                                            />
+                                            {formData.features.length > 1 && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeFeature(index)}
+                                                    className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm"
+                                                >
+                                                    Remove
+                                                </button>
+                                            )}
+                                        </div>
+                                    ))}
+                                    <button
+                                        type="button"
+                                        onClick={addFeature}
+                                        className="flex items-center text-indigo-400 hover:text-indigo-300 text-sm mt-2"
+                                    >
+                                        <Plus className="w-4 h-4 mr-1" />
+                                        Add Another Feature
+                                    </button>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        {/* right column  */}
                         <div className="space-y-6">
                             {/* Product Name */}
                             <div>
@@ -261,84 +336,9 @@ const AddProductPage = () => {
                                 />
                             </div>
                         </div>
-
-                        {/* Right Column */}
-                        <div className="space-y-6">
-                            {/* Description */}
-                            <div>
-                                <label htmlFor="description" className="block text-sm font-medium text-gray-300 mb-2">
-                                    Description *
-                                </label>
-                                <textarea
-                                    id="description"
-                                    name="description"
-                                    value={formData.description}
-                                    onChange={handleChange}
-                                    required
-                                    rows={5}
-                                    className="w-full bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 px-4 py-3 transition-colors duration-200"
-                                    placeholder="Enter detailed product description..."
-                                />
-                            </div>
-
-                            {/* Features */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
-                                    Features *
-                                </label>
-                                <div className="space-y-3">
-                                    {formData.features.map((feature, index) => (
-                                        <div key={index} className="flex gap-2 items-center">
-                                            <div className="w-2 h-2 bg-indigo-400 rounded-full flex-shrink-0"></div>
-                                            <input
-                                                type="text"
-                                                value={feature}
-                                                onChange={(e) => handleFeatureChange(index, e.target.value)}
-                                                required={index === 0}
-                                                className="flex-1 bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 px-4 py-2 transition-colors duration-200"
-                                                placeholder={`Feature ${index + 1}`}
-                                            />
-                                            {formData.features.length > 1 && (
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeFeature(index)}
-                                                    className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm"
-                                                >
-                                                    Remove
-                                                </button>
-                                            )}
-                                        </div>
-                                    ))}
-                                    <button
-                                        type="button"
-                                        onClick={addFeature}
-                                        className="flex items-center text-indigo-400 hover:text-indigo-300 text-sm mt-2"
-                                    >
-                                        <Plus className="w-4 h-4 mr-1" />
-                                        Add Another Feature
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Preview Section */}
-                            <div className="pt-4 border-t border-gray-700">
-                                <h3 className="text-lg font-semibold text-white mb-3">Preview</h3>
-                                {formData.image ? (
-                                    <div className="rounded-lg overflow-hidden border border-gray-700">
-                                        <img
-                                            src={formData.image}
-                                            alt="Product preview"
-                                            className="w-full h-48 object-cover"
-                                        />
-                                    </div>
-                                ) : (
-                                    <div className="w-full h-48 bg-gray-800/50 border-2 border-dashed border-gray-700 rounded-lg flex items-center justify-center">
-                                        <p className="text-gray-500">Image preview will appear here</p>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
                     </div>
+
+
 
                     {/* Submit Button */}
                     <div className="mt-8 pt-6 border-t border-gray-700 flex justify-center">

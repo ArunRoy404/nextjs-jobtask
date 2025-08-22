@@ -8,7 +8,6 @@ import LogoutButton from '../LogoutButton/LogoutButton';
 const NavActions = () => {
     const session = useSession()
     const user = session?.data?.user
-    console.log('user: ', user);
     return (
         <div className='flex items-center gap-3'>
             {

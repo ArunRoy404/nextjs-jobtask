@@ -1,14 +1,23 @@
+'use client'
+import { useSession } from "next-auth/react";
+
 const DashboardHome = () => {
+  const session = useSession()
+  const user = session?.data?.user
+
+  console.log(user);
   // Dummy data
   const stats = {
     totalProducts: 42,
     totalCategories: 6,
-    userName: "Alex Morgan"
+    userName: user?.username
   };
 
+
+
   return (
-    <div className="min-h-screen text-white p-6">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen text-white pt-4">
+      <div className="">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">
@@ -67,7 +76,7 @@ const DashboardHome = () => {
               <p className="text-gray-400 text-sm">In Stock</p>
               <p className="text-white font-semibold">38 products</p>
             </div>
-            
+
             <div className="text-center p-4 bg-gray-800/50 rounded-lg">
               <div className="w-8 h-8 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
                 <svg className="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,7 +86,7 @@ const DashboardHome = () => {
               <p className="text-gray-400 text-sm">Low Stock</p>
               <p className="text-white font-semibold">4 products</p>
             </div>
-            
+
             <div className="text-center p-4 bg-gray-800/50 rounded-lg">
               <div className="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
                 <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,7 +117,7 @@ const DashboardHome = () => {
               </div>
               <span className="text-gray-400 text-xs">2 hours ago</span>
             </div>
-            
+
             <div className="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg">
               <div className="flex items-center">
                 <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center mr-3">
