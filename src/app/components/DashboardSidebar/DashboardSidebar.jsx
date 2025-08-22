@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
 import Link from 'next/link';
-import { Layout, Grid, X, Menu, Cpu } from 'lucide-react';
+import { Layout, Grid, X, Menu, Cpu, Home } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 
 const DashboardSidebar = () => {
@@ -10,6 +10,11 @@ const DashboardSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
+    {
+      name: 'Home',
+      href: '/',
+      icon: <Home className="w-5 h-5" />
+    },
     {
       name: 'Dashboard',
       href: '/dashboard',

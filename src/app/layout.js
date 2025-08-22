@@ -32,8 +32,10 @@ export default function RootLayout({ children }) {
               className="absolute inset-0 -z-10 bg-cosmic-noise"
             />
             <Navbar />
-            {children}
-            <Footer/>
+            <div className="min-h-[calc(100vh-322px)]">
+              {children}
+            </div>
+            <Footer />
           </div>
         </NextAuthSessionProvider>
       </body>
