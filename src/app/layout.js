@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "./components/NavBar/Navbar";
 import NextAuthSessionProvider from "@/providers/NextAuthSessionProvider";
 import Footer from "./components/Footer/Footer";
+import ToasterProvider from "./components/ToasterProvider/ToasterProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ToasterProvider />
         <NextAuthSessionProvider>
           <div className="min-h-screen w-full relative">
             {/* Cosmic Noise */}

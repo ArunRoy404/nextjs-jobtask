@@ -5,6 +5,7 @@ import { Eye, EyeOff, UserPlus, Cpu, Mail, User, Image, Lock } from 'lucide-reac
 import Link from 'next/link';
 import { SignUpUser } from '@/app/actions/auth/signUpUser';
 import Loader from '@/app/components/Loader/Loader';
+import { notifyError, notifySuccess } from '@/utilities/ReactHotToast';
 
 const page = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -36,10 +37,10 @@ const page = () => {
 
     const result = await SignUpUser(finalData)
     if (result.success == false) {
-      alert(result.message)
+      notifyError(result.message)
       setIsLoading(false)
     } else {
-      alert("Account created Successfully!")
+      notifySuccess("Account created Successfully!")
       setIsLoading(false)
     }
   };

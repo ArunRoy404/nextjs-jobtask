@@ -5,6 +5,7 @@ import { Eye, EyeOff, LogIn, Cpu, Github, Twitter, Mail, Key } from 'lucide-reac
 import Link from 'next/link';
 import { signIn } from "next-auth/react"
 import Loader from '@/app/components/Loader/Loader';
+import { notifyError, notifySuccess } from '@/utilities/ReactHotToast';
 
 const page = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -35,11 +36,12 @@ const page = () => {
       callbackUrl: new URLSearchParams(window.location.search).get('callbackUrl') || '/products'
     })
     if (!result.ok) {
-      alert("invalid credential")
+      notifyError("invalid credential")
       setIsLoading(false)
     }
     else {
       setIsLoading(false)
+      notifySuccess("Login Successful")
       window.location.href = result.url || "/products";
     }
   };
