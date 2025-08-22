@@ -23,16 +23,13 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="min-h-screen w-full bg-black relative">
-          {/* Midnight Mist */}
+        <div className="min-h-screen w-full relative">
+          {/* Cosmic Noise */}
           <div
-            className="absolute inset-0 pointer-events-none"
+            className="absolute inset-0 -z-10"
             style={{
-              backgroundImage: `
-          radial-gradient(circle at 50% 100%, rgba(70, 85, 110, 0.5) 0%, transparent 60%),
-          radial-gradient(circle at 50% 100%, rgba(99, 102, 241, 0.4) 0%, transparent 70%),
-          radial-gradient(circle at 50% 100%, rgba(181, 184, 208, 0.3) 0%, transparent 80%)
-        `, backgroundAttachment: 'fixed',
+              background: "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08) 0%, transparent 40%), radial-gradient(circle at 80% 30%, rgba(255,255,255,0.05) 0%, transparent 40%), linear-gradient(120deg, #0f0e17 0%, #1a1b26 100%)",
+              backgroundAttachment: 'fixed'
             }}
           />
           <Navbar />

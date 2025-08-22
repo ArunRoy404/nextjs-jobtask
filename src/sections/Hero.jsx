@@ -2,7 +2,7 @@ import { ArrowRight, Sparkles, Zap, Shield } from 'lucide-react';
 
 const Hero = () => {
   return (
-    <section className="py-50">
+    <section className="py-30 xl:pt-50 xl:pb-30">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
           {/* Text Content */}
