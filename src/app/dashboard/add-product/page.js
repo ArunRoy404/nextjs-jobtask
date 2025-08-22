@@ -4,7 +4,22 @@ import { useState } from 'react';
 import { Plus, ArrowLeft, Save } from 'lucide-react';
 import Image from 'next/image';
 import { notifyError, notifySuccess } from '@/utilities/ReactHotToast';
-import Loader from '@/app/components/Loader/Loader';
+import 'ldrs/react/Ring.css'
+import { bouncy } from 'ldrs'
+bouncy.register()
+import { Toaster } from "react-hot-toast";
+
+
+const Loader = ({ size = '45', speed = '1.75', color = 'black' }) => {
+    return (
+        <l-bouncy
+            size={size}
+            speed={speed}
+            color={color}
+        ></l-bouncy>
+    );
+};
+
 
 const AddProductPage = () => {
     const [isLoading, setIsLoading] = useState(false)
@@ -96,6 +111,11 @@ const AddProductPage = () => {
 
     return (
         <div className="min-h-screen text-white py-8 px-4">
+            <Toaster toastOptions={{
+                style: {
+                    zIndex: 99999999
+                },
+            }}></Toaster>
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-8">
