@@ -5,7 +5,6 @@ import { Eye, EyeOff, UserPlus, Cpu, Mail, User, Image, Lock } from 'lucide-reac
 import Link from 'next/link';
 import { SignUpUser } from '@/app/actions/auth/signUpUser';
 import Loader from '@/app/components/Loader/Loader';
-import { useRouter, useSearchParams } from 'next/navigation';
 
 const page = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -16,11 +15,6 @@ const page = () => {
     password: '',
     imageLink: ''
   });
-
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/';
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,7 +41,6 @@ const page = () => {
     } else {
       alert("Account created Successfully!")
       setIsLoading(false)
-      router.push(callbackUrl);
     }
   };
 
@@ -60,15 +53,7 @@ const page = () => {
     <div className="min-h-screen w-full bg-black relative flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       {/* Midnight Mist Background */}
       <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 50% 100%, rgba(70, 85, 110, 0.5) 0%, transparent 60%),
-            radial-gradient(circle at 50% 100%, rgba(99, 102, 241, 0.4) 0%, transparent 70%),
-            radial-gradient(circle at 50% 100%, rgba(181, 184, 208, 0.3) 0%, transparent 80%)
-          `,
-          backgroundAttachment: 'fixed',
-        }}
+        className="absolute inset-0 pointer-events-none midnight-mist-bg"
       />
 
       <div className="w-full max-w-md z-10">
