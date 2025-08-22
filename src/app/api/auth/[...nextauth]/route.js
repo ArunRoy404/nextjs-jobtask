@@ -1,5 +1,6 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth"
+import dbConnect from "@/lib/dbConnect";
 
 export const authOptions = {
     providers: [CredentialsProvider({
@@ -10,14 +11,18 @@ export const authOptions = {
         // e.g. domain, username, password, 2FA token, etc.
         // You can pass any HTML attribute to the <input> tag through the object.
         credentials: {
-            username: { label: "Username", type: "text", placeholder: "jsmith" },
-            password: { label: "Password", type: "password" }
+            email: { label: 'Email', type: 'email' },
+            password: { label: "Password", type: "password" },
         },
         async authorize(credentials, req) {
             // Add logic here to look up the user from the credentials supplied
-            const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
+            // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
 
-            if (user) {
+            const { username, password, email } = credentials
+            const user = await dbConnect('users').findOne({ email })
+            const isPasswordOK = password == user.password
+
+            if (isPasswordOK) {
                 // Any object returned will be saved in `user` property of the JWT
                 return user
             } else {
@@ -28,7 +33,26 @@ export const authOptions = {
             }
         }
     })
-    ]
+    ],
+    callbacks: {
+        async session({ session, token, user }) {
+            if (token) [
+                session.user.username = token.username,
+                session.user.imageLink = token.imageLink
+            ]
+            return session
+        },
+        async jwt({ token, user, account, profile, isNewUser }) {
+            if (user) {
+                token.username = user.username
+                token.imageLink = user.imageLink
+            }
+            return token
+        }
+    },
+    pages: {
+        signIn: '/auth/login'
+    }
 }
 const handler = NextAuth(authOptions)
 
