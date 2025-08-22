@@ -2,7 +2,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/NavBar/Navbar";
 import NextAuthSessionProvider from "@/providers/NextAuthSessionProvider";
-import { Toaster } from "react-hot-toast";
 import Footer from "./components/Footer/Footer";
 
 const geistSans = Geist({
@@ -36,11 +35,6 @@ export default function RootLayout({ children }) {
                 backgroundAttachment: 'fixed'
               }}
             />
-            <Toaster toastOptions={{
-              style: {
-                zIndex: 99999999
-              },
-            }}></Toaster>
             <Navbar />
             {children}
             <Footer/>
