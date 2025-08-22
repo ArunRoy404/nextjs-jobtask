@@ -1,4 +1,5 @@
 import { Star, ShoppingCart, Heart, Eye } from 'lucide-react';
+import Link from 'next/link';
 
 const ProductHighlights = () => {
     // Dummy product data
@@ -132,9 +133,11 @@ const ProductHighlights = () => {
 
                 {/* View All Button */}
                 <div className="text-center mt-12">
-                    <button className="border border-indigo-600 hover:bg-indigo-600 text-white hover:text-white px-6 py-3 rounded-lg font-medium transition-all duration-300">
-                        View All Products
-                    </button>
+                    <Link href={'/products'}>
+                        <button className="border border-indigo-600 hover:bg-indigo-600 text-white hover:text-white px-6 py-3 rounded-lg font-medium transition-all duration-300">
+                            View All Products
+                        </button>
+                    </Link>
                 </div>
             </div>
         </section>
