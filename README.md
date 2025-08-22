@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Gadgetsphere
 
-## Getting Started
+**Gadgetsphere** is a modern, responsive web application built with **Next.js 15** and **NextAuth.js**. It allows users to browse products, view product details, and, after logging in, access a protected dashboard to add new products. The app demonstrates public and protected routes, authentication, and responsive UI with mobile-friendly navigation.  
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Landing page with Hero, Product Highlights, and Footer  
+- Credential-based and Google login using NextAuth.js  
+- Public product list and product detail pages  
+- Protected dashboard for adding new products  
+- Mobile-friendly navigation menu  
+- Optional enhancements: loading spinners, toast notifications, theme toggle  
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Technologies Used
 
-## Learn More
+- **Frontend:** Next.js 15 (App Router), React, Tailwind CSS, Material Tailwind  
+- **Authentication:** NextAuth.js  
+- **Backend / API:** Next.js Route Handlers (`/api`)  
+- **Other Libraries:** Lucide Icons, react-hook-form  
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Setup & Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Clone the repository**  
+   ```bash
+   git clone https://github.com/ArunRoy404/nextjs-jobtask.git
+   cd gadgetsphere
+   ```
 
-## Deploy on Vercel
+2. **Install dependencies**  
+   ```bash
+    npm install
+    # or
+    yarn install
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. **Configure environment variables** 
+   Create a .env.local file in the root directory:
+   ```bash
+    NEXTAUTH_SECRET=your_secret_key
+    MONGODB_URI=your_mongodb_uri
+    DB_NAME=your_database_name
+    NEXT_PUBLIC_API_URL=http://localhost:3000
+
+   ```
+
+4. **Run the development server** 
+   ```bash
+    npm run dev
+    # or
+    yarn dev
+   ```
+   Open http://localhost:3000 -> to view the app.
+
+5. **CBuild and run for production** 
+   ```bash
+    npm run build
+    npm run start
+   ```
+
+--- 
+
+## Route Summary
+
+| Route                    | Access    | Description                                           |
+|--------------------------|-----------|-------------------------------------------------------|
+| `/`                      | Public    | Landing page with Navbar, Hero, Product Highlights, Footer |
+| `/login`                 | Public    | Login page using credentials or Google login         |
+| `/register`              | Public    | User registration page                                |
+| `/products`              | Public    | Product listing page with name, description, and price |
+| `/products/[id]`         | Public    | Product details page for a single product            |
+| `/dashboard/add-product` | Protected | Add new product form; accessible only when logged in |
+
+
