@@ -1,5 +1,5 @@
 
-const Avatar = () => {
+const Avatar = ({image}) => {
 
 
 
@@ -7,7 +7,7 @@ const Avatar = () => {
         <div className="">
             <div tabIndex={0} role="button" className="avatar">
                 <div className="w-7 rounded-full overflow-hidden">
-                    <img src='https://i.ibb.co/sdcY1StY/unnamed.png' />
+                    <img src={image || 'https://i.ibb.co/sdcY1StY/unnamed.png'} />
                 </div>
             </div>
             {/* <ul

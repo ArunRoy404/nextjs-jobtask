@@ -11,5 +11,11 @@ export const middleware = async (req) => {
         return NextResponse.redirect(new URL(`/login?callbackUrl=${callbackUrl}`, req.url))
     }
 
+
+    const isAuthRoute = req.nextUrl.pathname.startsWith("/login") || req.nextUrl.pathname.startsWith("/register");
+    if (isAuthRoute && isTokenOK) {
+        return NextResponse.redirect(new URL("/", req.url));
+    }
+
     return NextResponse.next()
 }

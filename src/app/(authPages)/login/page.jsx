@@ -32,7 +32,7 @@ const page = () => {
       redirect: false,
       email,
       password,
-      callbackUrl: new URLSearchParams(window.location.search).get('callbackUrl') || '/'
+      callbackUrl: new URLSearchParams(window.location.search).get('callbackUrl') || '/products'
     })
     if (!result.ok) {
       alert("invalid credential")
@@ -40,7 +40,7 @@ const page = () => {
     }
     else {
       setIsLoading(false)
-      window.location.href = result.url || "/";
+      window.location.href = result.url || "/products";
     }
   };
 
